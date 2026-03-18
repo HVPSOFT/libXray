@@ -12,7 +12,6 @@ import (
 	"github.com/xtls/libxray/third_party/xrayknife/pkg/core/protocol"
 	"github.com/xtls/libxray/third_party/xrayknife/utils"
 
-	"github.com/fatih/color"
 	net2 "github.com/xtls/xray-core/common/net"
 	"github.com/xtls/xray-core/infra/conf"
 )
@@ -58,17 +57,17 @@ func (s *Socks) DetailsStr() string {
 	copyV := *s
 
 	info := fmt.Sprintf("%s: %s\n%s: %s\n%s: %s\n%s: %s\n%s: %v\n",
-		color.RedString("Protocol"), s.Name(),
-		color.RedString("Remark"), copyV.Remark,
-		color.RedString("Network"), "tcp",
-		color.RedString("Address"), copyV.Address,
-		color.RedString("Port"), copyV.Port,
+		detailLabel("Protocol"), s.Name(),
+		detailLabel("Remark"), copyV.Remark,
+		detailLabel("Network"), "tcp",
+		detailLabel("Address"), copyV.Address,
+		detailLabel("Port"), copyV.Port,
 	)
 
 	if len(copyV.Username) != 0 && len(copyV.Password) != 0 {
-		info += color.RedString("Username") + ": " + copyV.Username
+		info += detailLabel("Username") + ": " + copyV.Username
 		info += "\n"
-		info += color.RedString("Password") + ": " + copyV.Password
+		info += detailLabel("Password") + ": " + copyV.Password
 		info += "\n"
 	}
 	return info

@@ -6,8 +6,6 @@ import (
 	"os"
 	"sync"
 	"time"
-
-	"github.com/fatih/color"
 )
 
 // Type is the log level/category.
@@ -28,18 +26,17 @@ var (
 // TypesDetails holds the visual properties for each log type.
 type TypesDetails struct {
 	symbol string
-	color  *color.Color
 }
 
 // logTypeMap maps a log Type to its visual details (symbol and color).
 var logTypeMap = map[Type]TypesDetails{
-	Success:    {symbol: "✅", color: color.New(color.Bold, color.FgGreen)},
-	Failure:    {symbol: "❌", color: color.New(color.Bold, color.FgRed)},
-	Processing: {symbol: "⚙️ ", color: color.New(color.Bold, color.FgBlue)},
-	Finished:   {symbol: "🎉", color: color.New(color.BgGreen, color.FgBlack)},
-	Info:       {symbol: "ℹ️ ", color: color.New(color.Bold, color.FgCyan)},
-	Warning:    {symbol: "⚠️ ", color: color.New(color.Bold, color.FgYellow)},
-	None:       {symbol: "", color: color.New()}, // No symbol, default color
+	Success:    {symbol: "✅"},
+	Failure:    {symbol: "❌"},
+	Processing: {symbol: "⚙️ "},
+	Finished:   {symbol: "🎉"},
+	Info:       {symbol: "ℹ️ "},
+	Warning:    {symbol: "⚠️ "},
+	None:       {symbol: ""},
 }
 
 var (
@@ -67,19 +64,6 @@ func Printf(logType Type, format string, v ...interface{}) {
 	mu.Lock()
 	defer mu.Unlock()
 
-	// Check if the current output is a terminal device.
-	// This check is a bit tricky as the `output` can be anything.
-	// We'll assume color is enabled unless we're sure it's not a tty.
-	if f, ok := output.(*os.File); ok {
-		stat, _ := f.Stat()
-		color.NoColor = (stat.Mode() & os.ModeCharDevice) != os.ModeCharDevice
-	} else {
-		// For non-file writers (like web sockets), we typically want to send the raw string without ANSI color codes.
-		// However, fatih/color handles this by checking the NO_COLOR env var. We can also force it.
-		// For now, let's assume the receiver can handle it or we strip it elsewhere if needed.
-		color.NoColor = false
-	}
-
 	t, ok := logTypeMap[logType]
 	if !ok {
 		// Fallback for an undefined type to prevent a panic.
@@ -94,8 +78,7 @@ func Printf(logType Type, format string, v ...interface{}) {
 	currentTime := time.Now()
 	fullFormat := prefix + currentTime.Format("15:04:05") + " " + format
 
-	// Use Fprintf to write to the designated output.
-	t.color.Fprintf(output, fullFormat, v...)
+	fmt.Fprintf(output, fullFormat, v...)
 }
 
 // Println prints the given arguments to the designated output, followed by a newline.
@@ -107,9 +90,5 @@ func Println(v ...interface{}) {
 
 // GetColor wraps text in the ANSI color for the given log type.
 func GetColor(logType Type, text string) string {
-	t, ok := logTypeMap[logType]
-	if !ok {
-		t = logTypeMap[None]
-	}
-	return t.color.Sprint(text)
+	return text
 }

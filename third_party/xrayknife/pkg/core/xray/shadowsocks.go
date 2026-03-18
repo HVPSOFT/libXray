@@ -15,7 +15,6 @@ import (
 	"github.com/xtls/libxray/third_party/xrayknife/pkg/core/protocol"
 	"github.com/xtls/libxray/third_party/xrayknife/utils"
 
-	"github.com/fatih/color"
 	"github.com/xtls/xray-core/infra/conf"
 )
 
@@ -96,12 +95,12 @@ func (s *Shadowsocks) Parse() error {
 
 func (s *Shadowsocks) DetailsStr() string {
 	info := fmt.Sprintf("%s: %s\n%s: %s\n%s: %s\n%s: %v\n%s: %s\n%s: %s\n",
-		color.RedString("Protocol"), s.Name(),
-		color.RedString("Remark"), s.Remark,
-		color.RedString("IP"), s.Address,
-		color.RedString("Port"), s.Port,
-		color.RedString("Encryption"), s.Encryption,
-		color.RedString("Password"), s.Password)
+		detailLabel("Protocol"), s.Name(),
+		detailLabel("Remark"), s.Remark,
+		detailLabel("IP"), s.Address,
+		detailLabel("Port"), s.Port,
+		detailLabel("Encryption"), s.Encryption,
+		detailLabel("Password"), s.Password)
 	return info
 }
 

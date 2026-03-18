@@ -13,7 +13,6 @@ import (
 	"github.com/xtls/libxray/third_party/xrayknife/pkg/core/protocol"
 	"github.com/xtls/libxray/third_party/xrayknife/utils"
 
-	"github.com/fatih/color"
 	"github.com/xtls/xray-core/infra/conf"
 )
 
@@ -165,12 +164,12 @@ func (v *Vmess) Parse() error {
 func (v *Vmess) DetailsStr() string {
 	copyV := *v
 	info := fmt.Sprintf("%s: %s\n%s: %s\n%s: %s\n%s: %s\n%s: %v\n%s: %s\n",
-		color.RedString("Protocol"), v.Name(),
-		color.RedString("Remark"), copyV.Remark,
-		color.RedString("Network"), copyV.Network,
-		color.RedString("Address"), copyV.Address,
-		color.RedString("Port"), copyV.Port,
-		color.RedString("UUID"), copyV.ID)
+		detailLabel("Protocol"), v.Name(),
+		detailLabel("Remark"), copyV.Remark,
+		detailLabel("Network"), copyV.Network,
+		detailLabel("Address"), copyV.Address,
+		detailLabel("Port"), copyV.Port,
+		detailLabel("UUID"), copyV.ID)
 
 	if copyV.Network == "" {
 
@@ -186,18 +185,18 @@ func (v *Vmess) DetailsStr() string {
 		}
 
 		info += fmt.Sprintf("%s: %s\n%s: %s\n%s: %s\n",
-			color.RedString("Type"), copyV.Type,
-			color.RedString("Host"), copyV.Host,
-			color.RedString("Path"), copyV.Path)
+			detailLabel("Type"), copyV.Type,
+			detailLabel("Host"), copyV.Host,
+			detailLabel("Path"), copyV.Path)
 	} else if copyV.Network == "kcp" {
-		info += fmt.Sprintf("%s: %s\n", color.RedString("KCP Seed"), copyV.Path)
+		info += fmt.Sprintf("%s: %s\n", detailLabel("KCP Seed"), copyV.Path)
 	} else if copyV.Network == "grpc" {
 		if copyV.Host == "" {
 			copyV.Host = "none"
 		}
 		info += fmt.Sprintf("%s: %s\n%s: %s\n",
-			color.RedString("ServiceName"), copyV.Path,
-			color.RedString("Authority"), copyV.Host)
+			detailLabel("ServiceName"), copyV.Path,
+			detailLabel("Authority"), copyV.Host)
 	}
 
 	if len(copyV.TLS) != 0 && copyV.TLS != "none" {
@@ -215,14 +214,14 @@ func (v *Vmess) DetailsStr() string {
 			copyV.TlsFingerprint = "none"
 		}
 		info += fmt.Sprintf("%s: tls\n%s: %s\n%s: %s\n%s: %s\n",
-			color.RedString("TLS"),
-			color.RedString("SNI"), copyV.SNI,
-			color.RedString("ALPN"), copyV.ALPN,
-			color.RedString("Fingerprint"), copyV.TlsFingerprint)
+			detailLabel("TLS"),
+			detailLabel("SNI"), copyV.SNI,
+			detailLabel("ALPN"), copyV.ALPN,
+			detailLabel("Fingerprint"), copyV.TlsFingerprint)
 
 		if v.AllowInsecure != "" {
 			info += fmt.Sprintf("%s: %v\n",
-				color.RedString("Insecure"), v.AllowInsecure)
+				detailLabel("Insecure"), v.AllowInsecure)
 		}
 	}
 	return info

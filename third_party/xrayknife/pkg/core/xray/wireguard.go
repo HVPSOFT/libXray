@@ -10,7 +10,6 @@ import (
 
 	"github.com/xtls/libxray/third_party/xrayknife/pkg/core/protocol"
 
-	"github.com/fatih/color"
 	"github.com/xtls/xray-core/infra/conf"
 )
 
@@ -79,13 +78,13 @@ func (w *Wireguard) Parse() error {
 
 func (w *Wireguard) DetailsStr() string {
 	info := fmt.Sprintf("%s: %s\n%s: %s\n%s: %s\n%s: %d\n%s: %s\n%s: %v\n%s: %s\n",
-		color.RedString("Protocol"), w.Name(),
-		color.RedString("Remark"), w.Remark,
-		color.RedString("Endpoint"), w.Endpoint,
-		color.RedString("MTU"), w.Mtu,
-		color.RedString("Local Addresses"), w.LocalAddress,
-		color.RedString("Public Key"), w.PublicKey,
-		color.RedString("Secret Key"), w.SecretKey,
+		detailLabel("Protocol"), w.Name(),
+		detailLabel("Remark"), w.Remark,
+		detailLabel("Endpoint"), w.Endpoint,
+		detailLabel("MTU"), w.Mtu,
+		detailLabel("Local Addresses"), w.LocalAddress,
+		detailLabel("Public Key"), w.PublicKey,
+		detailLabel("Secret Key"), w.SecretKey,
 	)
 
 	return info

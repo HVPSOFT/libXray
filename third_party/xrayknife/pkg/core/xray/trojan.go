@@ -13,7 +13,6 @@ import (
 	"github.com/xtls/libxray/third_party/xrayknife/pkg/core/protocol"
 	"github.com/xtls/libxray/third_party/xrayknife/utils"
 
-	"github.com/fatih/color"
 	"github.com/xtls/xray-core/infra/conf"
 )
 
@@ -110,42 +109,42 @@ func (t *Trojan) DetailsStr() string {
 		copyV.Flow = "none"
 	}
 	info := fmt.Sprintf("%s: %s\n%s: %s\n%s: %s\n%s: %s\n%s: %v\n%s: %s\n%s: %s\n",
-		color.RedString("Protocol"), t.Name(),
-		color.RedString("Remark"), t.Remark,
-		color.RedString("Network"), t.Type,
-		color.RedString("Address"), t.Address,
-		color.RedString("Port"), t.Port,
-		color.RedString("Password"), t.Password,
-		color.RedString("Flow"), copyV.Flow,
+		detailLabel("Protocol"), t.Name(),
+		detailLabel("Remark"), t.Remark,
+		detailLabel("Network"), t.Type,
+		detailLabel("Address"), t.Address,
+		detailLabel("Port"), t.Port,
+		detailLabel("Password"), t.Password,
+		detailLabel("Flow"), copyV.Flow,
 	)
 
 	if copyV.Type == "xhttp" || copyV.Type == "http" || copyV.Type == "httpupgrade" || copyV.Type == "ws" || copyV.Type == "h2" || copyV.Type == "splithttp" {
 		info += fmt.Sprintf("%s: %s\n%s: %s\n",
-			color.RedString("Host"), copyV.Host,
-			color.RedString("Path"), copyV.Path)
+			detailLabel("Host"), copyV.Host,
+			detailLabel("Path"), copyV.Path)
 	} else if copyV.Type == "kcp" {
-		info += fmt.Sprintf("%s: %s\n", color.RedString("KCP Seed"), copyV.Path)
+		info += fmt.Sprintf("%s: %s\n", detailLabel("KCP Seed"), copyV.Path)
 	} else if copyV.Type == "grpc" {
 		if copyV.ServiceName == "" {
 			copyV.ServiceName = "none"
 		}
-		info += fmt.Sprintf("%s: %s\n", color.RedString("ServiceName"), copyV.ServiceName)
+		info += fmt.Sprintf("%s: %s\n", detailLabel("ServiceName"), copyV.ServiceName)
 	}
 
 	if copyV.Security == "reality" {
-		info += fmt.Sprintf("%s: reality\n", color.RedString("TLS"))
+		info += fmt.Sprintf("%s: reality\n", detailLabel("TLS"))
 		if copyV.SpiderX == "" {
 			copyV.SpiderX = "none"
 		}
 		info += fmt.Sprintf("%s: %s\n%s: %s\n%s: %s\n%s: %s\n%s: %s\n",
-			color.RedString("Public key"), copyV.PublicKey,
-			color.RedString("SNI"), copyV.SNI,
-			color.RedString("ShortID"), copyV.ShortIds,
-			color.RedString("SpiderX"), copyV.SpiderX,
-			color.RedString("Fingerprint"), copyV.TlsFingerprint,
+			detailLabel("Public key"), copyV.PublicKey,
+			detailLabel("SNI"), copyV.SNI,
+			detailLabel("ShortID"), copyV.ShortIds,
+			detailLabel("SpiderX"), copyV.SpiderX,
+			detailLabel("Fingerprint"), copyV.TlsFingerprint,
 		)
 	} else if copyV.Security == "tls" {
-		info += fmt.Sprintf("%s: tls\n", color.RedString("TLS"))
+		info += fmt.Sprintf("%s: tls\n", detailLabel("TLS"))
 		if len(copyV.SNI) == 0 {
 			if copyV.Host != "" {
 				copyV.SNI = copyV.Host
@@ -160,16 +159,16 @@ func (t *Trojan) DetailsStr() string {
 			copyV.TlsFingerprint = "none"
 		}
 		info += fmt.Sprintf("%s: %s\n%s: %s\n%s: %s\n",
-			color.RedString("SNI"), copyV.SNI,
-			color.RedString("ALPN"), copyV.ALPN,
-			color.RedString("Fingerprint"), copyV.TlsFingerprint)
+			detailLabel("SNI"), copyV.SNI,
+			detailLabel("ALPN"), copyV.ALPN,
+			detailLabel("Fingerprint"), copyV.TlsFingerprint)
 
 		if t.AllowInsecure != "" {
 			info += fmt.Sprintf("%s: %v\n",
-				color.RedString("Insecure"), t.AllowInsecure)
+				detailLabel("Insecure"), t.AllowInsecure)
 		}
 	} else {
-		info += fmt.Sprintf("%s: none\n", color.RedString("TLS"))
+		info += fmt.Sprintf("%s: none\n", detailLabel("TLS"))
 	}
 	return info
 }
