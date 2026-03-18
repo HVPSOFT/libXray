@@ -33,6 +33,12 @@ func ConvertShareLinksToXrayJson(links string) (*conf.Config, error) {
 
 	text = FixWindowsReturn(text)
 	if checkSupportedShareLink(text) {
+		if !strings.Contains(text, "\n") {
+			xray, err := convertSingleShareLinkWithXrayKnife(text)
+			if err == nil {
+				return xray, nil
+			}
+		}
 		xray, err := parsePlainShareText(text)
 		if err != nil {
 			return xray, err

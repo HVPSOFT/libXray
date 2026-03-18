@@ -32,6 +32,18 @@ func CGoConvertShareLinksToXrayJson(base64Text *C.char) *C.char {
 	return C.CString(ConvertShareLinksToXrayJson(text))
 }
 
+//export CGoConvertShareLinkToXrayJSON
+func CGoConvertShareLinkToXrayJSON(link *C.char) *C.char {
+	text := C.GoString(link)
+	return C.CString(ConvertShareLinkToXrayJSON(text))
+}
+
+//export CGoConvertShareLinkToXrayJSONWithXrayKnife
+func CGoConvertShareLinkToXrayJSONWithXrayKnife(link *C.char) *C.char {
+	text := C.GoString(link)
+	return C.CString(ConvertShareLinkToXrayJSONWithXrayKnife(text))
+}
+
 //export CGOConvertXrayJsonToShareLinks
 func CGOConvertXrayJsonToShareLinks(base64Text *C.char) *C.char {
 	text := C.GoString(base64Text)
